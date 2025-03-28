@@ -1,4 +1,4 @@
-import {CommonModule, isPlatformBrowser} from "@angular/common";
+import { CommonModule, isPlatformBrowser } from "@angular/common";
 import {
   AfterContentChecked,
   AfterViewInit,
@@ -13,8 +13,8 @@ import {
   QueryList,
   ViewChild,
 } from "@angular/core";
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
-import {Subject} from "rxjs";
+import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "om-marquee",
@@ -23,10 +23,14 @@ import {Subject} from "rxjs";
   templateUrl: "./ngx-marquee.component.html",
   styleUrl: "./ngx-marquee.component.scss",
 })
-export class NgxMarqueeComponent implements AfterViewInit, AfterContentChecked, OnDestroy {
+export class NgxMarqueeComponent
+  implements AfterViewInit, AfterContentChecked, OnDestroy
+{
   @ViewChild("OmMarquee") marqueeRef!: ElementRef<HTMLElement>;
 
-  @ContentChildren("OmMarqueeContent") elementRefs?: QueryList<ElementRef<HTMLElement>>;
+  @ContentChildren("OmMarqueeContent") elementRefs?: QueryList<
+    ElementRef<HTMLElement>
+  >;
 
   @Input("styleClass")
   styleClass?: string;
@@ -76,9 +80,8 @@ export class NgxMarqueeComponent implements AfterViewInit, AfterContentChecked, 
   constructor(
     private readonly sanitizer: DomSanitizer,
     private cdr: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) private platformId: object
-  ) {
-  }
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {}
 
   ngAfterViewInit(): void {
     this.getMarqueeContent();
@@ -88,9 +91,11 @@ export class NgxMarqueeComponent implements AfterViewInit, AfterContentChecked, 
         if (entry.isIntersecting) {
           if (!this.isInView) {
             this.isInView = true;
+            this.cdr.detectChanges();
           }
         } else if (this.isInView) {
           this.isInView = false;
+          this.cdr.detectChanges();
         }
       });
       this.intersectionObserver.observe(this.marqueeRef.nativeElement);
@@ -103,7 +108,7 @@ export class NgxMarqueeComponent implements AfterViewInit, AfterContentChecked, 
     }
 
     const currentContentSnapshot = this.elementRefs.map(
-      (ref) => ref.nativeElement.innerHTML
+      (ref) => ref.nativeElement.innerHTML,
     );
 
     if (
@@ -133,7 +138,7 @@ export class NgxMarqueeComponent implements AfterViewInit, AfterContentChecked, 
 
     this.marqueeElements = this.elementRefs?.toArray().map((ref) => {
       return this.sanitizer.bypassSecurityTrustHtml(
-        ref.nativeElement.outerHTML
+        ref.nativeElement.outerHTML,
       );
     });
 
