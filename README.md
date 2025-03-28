@@ -80,6 +80,7 @@ How It Works
   [marqueeGap]="marqueeGap"
   [pauseOnHover]="pauseOnHover"
   [vertical]="vertical"
+  [scrollable]="scrollable"
   styleClass="your-custom-class"
 >
   <ng-content></ng-content>
@@ -91,6 +92,7 @@ How It Works
 - `marqueeGap` (optional): The gap between the marquee items. Accepts any valid CSS size value (e.g., '1rem', '2rem').
 - `pauseOnHover` (optional): A boolean to pause the scroll animation when the marquee is hovered. Defaults to true.
 - `vertical` (optional): A boolean to switch the marquee to vertical scrolling mode. Defaults to false.
+- `scrollable` (optional): A boolean to allow scrolling. Defaults to false.
 - `styleClass` (optional): A custom CSS class to apply to the .om-marquee container for additional styling.
 
 ## Example

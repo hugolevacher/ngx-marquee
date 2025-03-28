@@ -53,12 +53,24 @@
     }
   }
 
+  .om-marquee-content.scrollable {
+    cursor: grab;
+
+    &.dragging {
+      cursor: grabbing;
+    }
+  }
+
   .om-marquee-content:hover > .om-marquee-item-wrapper {
     animation-play-state: var(--om-marquee-pause);
   }
 
   .om-marquee-content.outOfView > .om-marquee-item-wrapper {
     animation-play-state: paused;
+  }
+
+  .om-marquee-item-wrapper.paused {
+    animation: none !important;
   }
 }
 

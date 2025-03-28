@@ -9,7 +9,7 @@
   <div class="om-marquee-invisible">
     <ng-content></ng-content>
   </div>
-  <div class="om-marquee-content" [class.outOfView]="!isInView">
+  <div class="om-marquee-content" [class.outOfView]="!isInView" [class.scrollable]="scrollable">
     <div class="om-marquee-item-wrapper">
       @for (content of marqueeElements; track $index) {
       <div class="om-marquee-item" [innerHTML]="content"></div>
