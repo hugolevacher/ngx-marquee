@@ -1,8 +1,7 @@
-import { CommonModule, isPlatformBrowser } from "@angular/common";
+import {CommonModule, isPlatformBrowser} from "@angular/common";
 import {
-  AfterContentChecked,
   AfterViewInit,
-  ChangeDetectorRef,
+  ChangeDetectionStrategy,
   Component,
   ContentChildren,
   ElementRef,
@@ -12,11 +11,12 @@ import {
   OnDestroy,
   PLATFORM_ID,
   QueryList,
+  signal,
   SimpleChanges,
+  TemplateRef,
   ViewChild,
 } from "@angular/core";
-import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
-import { Subject } from "rxjs";
+import {Subject} from "rxjs";
 
 @Component({
   selector: "om-marquee",
@@ -24,15 +24,13 @@ import { Subject } from "rxjs";
   imports: [CommonModule],
   templateUrl: "./ngx-marquee.component.html",
   styleUrl: "./ngx-marquee.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgxMarqueeComponent
-  implements AfterViewInit, AfterContentChecked, OnDestroy, OnChanges
-{
+  implements AfterViewInit, OnDestroy, OnChanges {
   @ViewChild("OmMarquee") marqueeRef!: ElementRef<HTMLElement>;
 
-  @ContentChildren("OmMarqueeContent") elementRefs?: QueryList<
-    ElementRef<HTMLElement>
-  >;
+  @ContentChildren(TemplateRef) templates!: QueryList<TemplateRef<any>>;
 
   @Input("styleClass")
   styleClass?: string;
@@ -83,32 +81,23 @@ export class NgxMarqueeComponent
 
   style: any = {};
 
-  marqueeElements: SafeHtml[] = [];
-
-  isInView = false;
+  isInView = signal(false);
   private intersectionObserver?: IntersectionObserver;
 
-  private contentSnapshot: string[] = [];
-
   constructor(
-    private readonly sanitizer: DomSanitizer,
-    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: object,
-  ) {}
+  ) {
+  }
 
   ngAfterViewInit(): void {
-    this.getMarqueeContent();
-
     if (isPlatformBrowser(this.platformId)) {
       this.intersectionObserver = new IntersectionObserver(([entry]) => {
         if (entry.isIntersecting) {
-          if (!this.isInView) {
-            this.isInView = true;
-            this.cdr.detectChanges();
+          if (!this.isInView()) {
+            this.isInView.set(true);
           }
         } else if (this.isInView) {
-          this.isInView = false;
-          this.cdr.detectChanges();
+          this.isInView.set(false);
         }
       });
       this.intersectionObserver.observe(this.marqueeRef.nativeElement);
@@ -116,24 +105,6 @@ export class NgxMarqueeComponent
       if (this.scrollable) {
         this.initDragEvents();
       }
-    }
-  }
-
-  ngAfterContentChecked() {
-    if (!this.elementRefs) {
-      return;
-    }
-
-    const currentContentSnapshot = this.elementRefs.map(
-      (ref) => ref.nativeElement.innerHTML,
-    );
-
-    if (
-      JSON.stringify(this.contentSnapshot) !==
-      JSON.stringify(currentContentSnapshot)
-    ) {
-      this.contentSnapshot = currentContentSnapshot;
-      this.getMarqueeContent();
     }
   }
 
@@ -163,20 +134,6 @@ export class NgxMarqueeComponent
   private cleanupDragEvents(): void {
     this.unListeners.forEach((fn) => fn());
     this.unListeners = [];
-  }
-
-  private getMarqueeContent(): void {
-    if (!this.elementRefs) {
-      return;
-    }
-
-    this.marqueeElements = this.elementRefs?.toArray().map((ref) => {
-      return this.sanitizer.bypassSecurityTrustHtml(
-        ref.nativeElement.outerHTML,
-      );
-    });
-
-    this.cdr.detectChanges();
   }
 
   private initDragEvents(): void {
@@ -226,7 +183,7 @@ export class NgxMarqueeComponent
 
       const gap = parseFloat(
         getComputedStyle(firstWrapper).getPropertyValue("--om-marquee-gap") ||
-          "0",
+        "0",
       );
 
       const limit = -(wrapperSize + gap);
@@ -257,7 +214,7 @@ export class NgxMarqueeComponent
 
       const gap = parseFloat(
         getComputedStyle(firstWrapper).getPropertyValue("--om-marquee-gap") ||
-          "0",
+        "0",
       );
 
       const totalDistance = wrapperSize + gap;

@@ -44,6 +44,8 @@ import {NgxMarqueeComponent} from '@omnedia/ngx-marquee';
 
 Use the component in your template:
 
+### Version 1.\*.\* - 2.\*.\*
+
 ```html
 
 <om-marquee
@@ -62,6 +64,35 @@ Use the component in your template:
   <div #OmMarqueeContent class="item">
     Item 3
   </div>
+</om-marquee>
+```
+
+### Version ^3.\*.\*
+
+```html
+
+<om-marquee
+  [reverse]="true"
+  [animationDuration]="'10s'"
+  [marqueeGap]="'2rem'"
+  [pauseOnHover]="true"
+  styleClass="custom-marquee"
+>
+  <ng-template>
+    <div class="item">
+      Item 1
+    </div>
+  </ng-template>
+  <ng-template>
+    <div class="item">
+      Item 2
+    </div>
+  </ng-template>
+  <ng-template>
+    <div class="item">
+      Item 3
+    </div>
+  </ng-template>
 </om-marquee>
 ```
 

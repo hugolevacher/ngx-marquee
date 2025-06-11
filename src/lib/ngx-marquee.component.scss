@@ -7,13 +7,6 @@
   width: 100%;
   height: 100%;
 
-  .om-marquee-invisible {
-    width: 0;
-    height: 0;
-    display: none;
-    pointer-events: none;
-  }
-
   .om-marquee-content {
     width: 100%;
     height: 100%;
@@ -35,8 +28,7 @@
 
       .om-marquee-item-wrapper {
         flex-direction: row;
-        animation: om-marquee-row var(--om-marquee-animation-duration) infinite
-          linear var(--om-marquee-reverse);
+        animation: om-marquee-row var(--om-marquee-animation-duration) infinite linear var(--om-marquee-reverse);
       }
     }
   }
@@ -47,8 +39,7 @@
 
       .om-marquee-item-wrapper {
         flex-direction: column;
-        animation: om-marquee-column var(--om-marquee-animation-duration)
-          infinite linear var(--om-marquee-reverse);
+        animation: om-marquee-column var(--om-marquee-animation-duration) infinite linear var(--om-marquee-reverse);
       }
     }
   }
