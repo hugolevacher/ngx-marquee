@@ -7,33 +7,22 @@
   #OmMarquee
 >
   <div class="om-marquee-content" [class.outOfView]="!isInView()" [class.scrollable]="scrollable">
-    <div class="om-marquee-item-wrapper">
-      @for (template of templates; track $index) {
-        <div class="om-marquee-item">
-          <ng-container *ngTemplateOutlet="template; context: { index: $index }"></ng-container>
-        </div>
-      }
-    </div>
-    <div class="om-marquee-item-wrapper">
-      @for (template of templates; track $index) {
-        <div class="om-marquee-item">
-          <ng-container *ngTemplateOutlet="template; context: { index: $index }"></ng-container>
-        </div>
-      }
-    </div>
-    <div class="om-marquee-item-wrapper">
-      @for (template of templates; track $index) {
-        <div class="om-marquee-item">
-          <ng-container *ngTemplateOutlet="template; context: { index: $index }"></ng-container>
-        </div>
-      }
-    </div>
-    <div class="om-marquee-item-wrapper">
-      @for (template of templates; track $index) {
-        <div class="om-marquee-item">
-          <ng-container *ngTemplateOutlet="template; context: { index: $index }"></ng-container>
-        </div>
-      }
-    </div>
+    @for (wrapper of [0, 1, 2, 3]; track wrapper) {
+      <div class="om-marquee-item-wrapper">
+        @if (marqueeItems.length > 0) {
+          @for (item of marqueeItems; track $index) {
+            <div class="om-marquee-item">
+              <ng-container *ngTemplateOutlet="item.template; context: item.context"></ng-container>
+            </div>
+          }
+        } @else {
+          @for (template of templates; track $index) {
+            <div class="om-marquee-item">
+              <ng-container *ngTemplateOutlet="template; context: { index: $index }"></ng-container>
+            </div>
+          }
+        }
+      </div>
+    }
   </div>
 </div>

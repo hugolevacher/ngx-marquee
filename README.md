@@ -7,7 +7,9 @@
 This Library is part of the NGXUI ecosystem. <br>
 View all available components at https://ngxui.com
 
-`@omnedia/ngx-marquee` is an Angular library that provides a customizable marquee component with animation controls for scrolling content horizontally or vertically. The component offers flexible configuration options such as animation speed, direction (horizontal or vertical), reverse mode, gap size, and an option to pause the marquee on hover.
+`@omnedia/ngx-marquee` is an Angular library that provides a customizable marquee component with animation controls for
+scrolling content horizontally or vertically. The component offers flexible configuration options such as animation
+speed, direction (horizontal or vertical), reverse mode, gap size, and an option to pause the marquee on hover.
 
 ## Features
 
@@ -29,14 +31,14 @@ npm install @omnedia/ngx-marquee
 Import the `NgxMarqueeComponent` in your Angular module or component:
 
 ```typescript
-import {NgxMarqueeComponent} from '@omnedia/ngx-marquee';
+import { NgxMarqueeComponent } from '@omnedia/ngx-marquee';
 
 @Component({
-  ...
-    imports:
+    ...
+        imports:
 [
-  ...
-    NgxMarqueeComponent,
+    ...
+        NgxMarqueeComponent,
 ],
 ...
 })
@@ -69,8 +71,12 @@ Use the component in your template:
 
 ### Version ^3.\*.\*
 
-```html
+From v3.1.0, you can optionally use the `[omMarqueeItem]` directive to bind data context directly to each
+`<ng-template>`.  
+This allows duplicated marquee items to retain their original data when the marquee repeats internally.
 
+```html
+<!-- Without dynamic items -->
 <om-marquee
   [reverse]="true"
   [animationDuration]="'10s'"
@@ -94,12 +100,32 @@ Use the component in your template:
     </div>
   </ng-template>
 </om-marquee>
+
+<!-- With dynamic items since v3.1.0 -->
+<om-marquee
+  [reverse]="true"
+  [animationDuration]="'10s'"
+  [marqueeGap]="'2rem'"
+  [pauseOnHover]="true"
+  styleClass="custom-marquee"
+>
+  @for (item of items; track $index) {
+  <ng-template [omMarqueeItem]="item">
+    <div class="item">
+      {{ item.name }}
+    </div>
+  </ng-template>
+  }
+</om-marquee>
 ```
 
 How It Works
 
-- Customizable Direction and Animation: You can set the marquee to scroll content horizontally or vertically by setting the vertical input. You can also control the speed, gap between items, reverse the scroll direction, and pause the scroll when hovered.
-- Global and Custom Styling: The .om-marquee container can be styled globally or with a custom styleClass. Content elements inside the marquee retain their parent component styling, allowing flexibility in their design.
+- Customizable Direction and Animation: You can set the marquee to scroll content horizontally or vertically by setting
+  the vertical input. You can also control the speed, gap between items, reverse the scroll direction, and pause the
+  scroll when hovered.
+- Global and Custom Styling: The .om-marquee container can be styled globally or with a custom styleClass. Content
+  elements inside the marquee retain their parent component styling, allowing flexibility in their design.
 
 ## API
 
@@ -119,12 +145,16 @@ How It Works
 ```
 
 - `reverse` (optional): A boolean to reverse the scroll direction. Defaults to false.
-- `animationDuration` (optional): The duration of the scroll animation. Accepts any valid CSS time value (e.g., '20s', '10s').
+- `animationDuration` (optional): The duration of the scroll animation. Accepts any valid CSS time value (e.g., '20s', '
+  10s').
 - `marqueeGap` (optional): The gap between the marquee items. Accepts any valid CSS size value (e.g., '1rem', '2rem').
 - `pauseOnHover` (optional): A boolean to pause the scroll animation when the marquee is hovered. Defaults to true.
 - `vertical` (optional): A boolean to switch the marquee to vertical scrolling mode. Defaults to false.
 - `scrollable` (optional): A boolean to allow scrolling. Defaults to false.
 - `styleClass` (optional): A custom CSS class to apply to the .om-marquee container for additional styling.
+- `omMarqueeItem` (optional directive): Used on `<ng-template>` elements projected into `<om-marquee>`.  
+  Pass any value or object to preserve its context across repeated marquee clones.  
+  Example: `[omMarqueeItem]="message"`
 
 ## Example
 
@@ -137,17 +167,20 @@ How It Works
 </om-marquee>
 ```
 
-This will create a marquee that scrolls content horizontally, with an animation duration of 15 seconds and a gap of 1 rem between each item.
+This will create a marquee that scrolls content horizontally, with an animation duration of 15 seconds and a gap of 1
+rem between each item.
 
 ## Styling
 
 `.om-marquee`
 
-- The main container for the marquee effect. You can apply global or custom styles using the styleClass input. The marquee content will automatically scroll in the specified direction based on the component's configuration.
+- The main container for the marquee effect. You can apply global or custom styles using the styleClass input. The
+  marquee content will automatically scroll in the specified direction based on the component's configuration.
 
 ### Example of Global and Custom Styling
 
-In this example, the marquee container is customized with a background color and padding, while the items inside the marquee retain their original styles:
+In this example, the marquee container is customized with a background color and padding, while the items inside the
+marquee retain their original styles:
 
 ```html
 
@@ -160,19 +193,19 @@ In this example, the marquee container is customized with a background color and
 ```css
 
 .marquee-custom-style {
-  background-color: #333;
-  padding: 1rem;
-  color: #fff;
+    background-color: #333;
+    padding: 1rem;
+    color: #fff;
 }
 
 .item-1 {
-  font-size: 1.5rem;
-  color: #ffcc00;
+    font-size: 1.5rem;
+    color: #ffcc00;
 }
 
 .item-2 {
-  font-size: 1.5rem;
-  color: #00ffcc;
+    font-size: 1.5rem;
+    color: #00ffcc;
 }
 ```
 
